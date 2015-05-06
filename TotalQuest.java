@@ -58,3 +58,14 @@ public class TotalQuest {
 		System.out.println("Test successful");
 	}
 }
+
+
+/* TO DO LIST...
+|  
+|	- Add User Input or File Selection
+|	- Convert ArrayList into normal Array
+|	- Covert this concept into a C# Class for helping build that returns a finished Array 
+|	- (mainly did it in Java to stay fresh)
+|	- Still need to implement repeat quest filtering.
+|
+*/
