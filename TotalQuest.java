@@ -59,6 +59,9 @@ public class TotalQuest {
 	}
 }
 
+/*PrintWriter output = new PrintWriter(new FileWriter("Quest Array.txt"));
+output.println(quests);
+output.close();*/
 
 /* TO DO LIST...
 |  
