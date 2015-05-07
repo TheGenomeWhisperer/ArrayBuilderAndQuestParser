@@ -54,12 +54,13 @@ public class QuestParser {
 		
 		while(copy.hasNextLine()) {
 			quest = copy.nextLine();
-			if(quest.indexOf("IsQuestCompleted(") != -1) {
+			while (quest.indexOf("IsQuestCompleted(") != -1){
 				if (isFiveNum(quest.substring(quest.indexOf("IsQuestCompleted(") + 17, quest.indexOf("IsQuestCompleted(") + 22))) {
-					while (quest.indexOf("IsQuestCompleted(") != -1){
-						result += quest.substring(quest.indexOf("IsQuestCompleted(") + 17, quest.indexOf("IsQuestCompleted(") + 22) + ", ";
-						quest = quest.substring(quest.indexOf("IsQuestCompleted(") + 22);
-					}
+					result += quest.substring(quest.indexOf("IsQuestCompleted(") + 17, quest.indexOf("IsQuestCompleted(") + 22) + ", ";
+					quest = quest.substring(quest.indexOf("IsQuestCompleted(") + 22);
+				}
+				else {
+					quest = quest.substring(quest.indexOf("IsQuestCompleted(") + 22);
 				}
 			}
 		}
@@ -81,6 +82,19 @@ public class QuestParser {
 		return result;
 		
 	}
-	
+	/* TO DO LIST...
+|  
+|	- Write method that searches for 5 digit questID instead of identifiers (more prone to bugs, but easier)
+|	- Add User Input or File Selection
+|	- Convert String into Array
+|	- Covert this concept into a C# Class for helping build that returns a finished Array 
+|	- (mainly did it in Java to stay fresh)
+|	- Still need to implement repeat quest filtering.
+|
+*/
+
+/*PrintWriter output = new PrintWriter(new FileWriter("Quest Array.txt"));
+output.println(quests);
+output.close();*/
 
 }
