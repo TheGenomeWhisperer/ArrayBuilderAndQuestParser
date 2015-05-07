@@ -11,47 +11,76 @@ public class QuestParser {
 	String quests = "";
 	Scanner mainFile;
 	
+	// To Play around with until I combine my blocks of code.
+	Scanner copy;
+	Scanner copy2;
+	
 	// Constructor
 	public QuestParser(File file) throws FileNotFoundException {
 		mainFile = new Scanner(file);
+		copy = new Scanner(file);
+		copy2 = new Scanner(file);
 	}
 
-	// Method: "FindNextID"
-	// Purpose: To continue parsing through the mainFile until the next
-	//			5 number questID is found, returning the ID.
-	public String findNextID() {
+	// Method: "IsFiveNum"
+	// Purpose: To verify that the give 5 number "string" is actuall 0-9
+	//			This is Pre-Integer conversion
+	public boolean isFiveNum(String str) {
+		boolean result = false;
+		int count = 0;
 		
-		String result = "";
-		while(mainFile.hasNextLine()){
-			// Looks at the first word match on a line
-			String quest = mainFile.nextLine();
-			if (quest.indexOf("QuestIds") > -1) {
-				quest = mainFile.nextLine().replaceAll("\\s+", "");
-				// Checking for stop of list of IDs..
-				while (quest.indexOf("]") == -1) {
-					if (quest.length() == 5 && isFiveNum(quest)) {
-						result += quest + ", ";
-					}
-					quest = mainFile.nextLine().replaceAll("\\s+", "");
+		if (str.length() == 5) {
+			// Iterating through next 5 characters.
+			for (int i = 0; i < 5; i++) {
+				// Verifying it is a number 0-9
+				if (str.charAt(i) >= 48 && str.charAt(i) <=57) {
+					count++;
+				}
+				if (count == 5) {
+					result = true;
 				}
 			}
 		}
 		return result;
 	}
-	
-	public boolean isFiveNum(String str) {
-		boolean result = false;
-		int count = 0;
-		// Iterating through next 5 characters.
-		for (int i = 0; i < 5; i++) {
-			// Verifying it is a number 0-9
-			if (str.charAt(i) >= 48 && str.charAt(i) <=57) {
-				count++;
+
+	// Method: "FindIDs"
+	// Purpose: To continue parsing through the mainFile until the next
+	//			5 number questID is found, returning the ID.
+	public String findIDs() {
+		
+		String result = "";
+		String quest = "";
+		
+		while(copy.hasNextLine()) {
+			quest = copy.nextLine();
+			if(quest.indexOf("IsQuestCompleted(") != -1) {
+				if (isFiveNum(quest.substring(quest.indexOf("IsQuestCompleted(") + 17, quest.indexOf("IsQuestCompleted(") + 22))) {
+					while (quest.indexOf("IsQuestCompleted(") != -1){
+						result += quest.substring(quest.indexOf("IsQuestCompleted(") + 17, quest.indexOf("IsQuestCompleted(") + 22) + ", ";
+						quest = quest.substring(quest.indexOf("IsQuestCompleted(") + 22);
+					}
+				}
 			}
-			if (count == 5) {
-				result = true;
+		}
+		// Checking Next Conditionals
+		while(copy2.hasNextLine()){
+			// Looks at the first word match on a line
+			quest = copy2.nextLine();
+			if (quest.indexOf("QuestIds") != -1) {
+				quest = copy2.nextLine().replaceAll("\\s+", "");
+				// Checking for stop of list of IDs..
+				while (quest.indexOf("]") == -1) {
+					if (isFiveNum(quest)) {
+						result += quest + ", ";
+					}
+					quest = copy2.nextLine().replaceAll("\\s+", "");
+				}
 			}
 		}
 		return result;
+		
 	}
+	
+
 }
