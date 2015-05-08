@@ -1,0 +1,51 @@
+The Following Block of Code is designed to be 100% copy and pasted.
+After having parsed the script and compiled all the quests of the profile,
+all you need to do is now copy and paste this block of code into the
+Rebot editor's "Run C#" Script tool.  Then, when placing that block of code
+at the start of any questing profile that you just parsed, it will provide
+a useful, quality of life, profile progress report!
+
+Block of Code Begins Here:
+
+int[] questArray = {36862,35620,35077,35079,36179,35080,35082,35081,35285,36365,36456,36291,35481,36366,35090,35089,36384,35091,35211,36428,36306,35298,36062,31769,26840,34378};
+int count = 0;
+for (int i = 0; i < questArray.Length; i++)
+{
+	if (!IsQuestCompleted(questArray[i]))
+	{
+		count++;
+	}
+}
+Print("You Have " + count + " quests left to complete in this questpack!");
+
+End Block of Code
+
+QUEST ID ARRAY
+(For Ease to copy and paste into a column, if needed)
+
+36862
+35620
+35077
+35079
+36179
+35080
+35082
+35081
+35285
+36365
+36456
+36291
+35481
+36366
+35090
+35089
+36384
+35091
+35211
+36428
+36306
+35298
+36062
+31769
+26840
+34378
