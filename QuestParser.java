@@ -7,9 +7,9 @@ import java.util.Scanner;
 public class QuestParser {
 
 	// Instance Variables
-	ArrayList<Integer> questArray = new ArrayList<Integer>();
 	String quests = "";
 	Scanner mainFile;
+	int[] questArray;
 	
 	// To Play around with until I combine my blocks of code.
 	Scanner copy;
@@ -20,10 +20,12 @@ public class QuestParser {
 		mainFile = new Scanner(file);
 		copy = new Scanner(file);
 		copy2 = new Scanner(file);
+		quests = findIDs();
+		questArray = toArray(quests);
 	}
 
 	// Method: "IsFiveNum"
-	// Purpose: To verify that the give 5 number "string" is actuall 0-9
+	// Purpose: To verify that the give 5 number "string" is actually 0-9
 	//			This is Pre-Integer conversion
 	public boolean isFiveNum(String str) {
 		boolean result = false;
@@ -79,22 +81,52 @@ public class QuestParser {
 				}
 			}
 		}
+		// Removing the last comma from the list.
+		result = result.substring(0, result.length() -2 );
 		return result;
-		
 	}
-	/* TO DO LIST...
-|  
-|	- Write method that searches for 5 digit questID instead of identifiers (more prone to bugs, but easier)
-|	- Add User Input or File Selection
-|	- Convert String into Array
-|	- Covert this concept into a C# Class for helping build that returns a finished Array 
-|	- (mainly did it in Java to stay fresh)
-|	- Still need to implement repeat quest filtering.
-|
-*/
-
-/*PrintWriter output = new PrintWriter(new FileWriter("Quest Array.txt"));
-output.println(quests);
-output.close();*/
-
+	
+	public int[] toArray(String IDs) {
+		int[] result;
+		String copy = IDs;
+		Scanner idCount = new Scanner(IDs);
+		Scanner idToArray = new Scanner(copy);
+		int count = 0;
+		while (idCount.hasNext()) {
+			idCount.next();
+			count++;
+		}
+		if (count > 0) {
+			result = new int[count];
+			for (int i = 0; i < count; i++) {
+				// Checks for last variable because (-1) is not necessary on last
+				if (i < count - 1) {
+					String temp = idToArray.next();
+					temp = temp.substring(0, temp.length()-1);
+					result[i] = Integer.parseInt(temp);
+				}
+				else {
+					String temp = idToArray.next();
+					temp = temp.substring(0, temp.length());
+					result[i] = Integer.parseInt(temp);
+				}
+			}
+		}
+		else {
+			result = new int[] {};
+		}
+		// Avoid resource leak, closing Scanners
+		idCount.close();
+		idToArray.close();		
+		return result;
+	}
+	
+	// Main method to return String of questIDs
+	public String getStringOfQuestIDs() {
+		return quests;
+	}
+	// Main method to return Array of questIDs
+	public int[] getArrayOfQuestIDs() {
+		return questArray;
+	}
 }
