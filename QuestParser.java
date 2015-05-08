@@ -3,7 +3,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -163,7 +162,7 @@ public class QuestParser {
 	// Purpose: To output to a .txt file the string, and the array in a
 	// 			format ready to copy into the ReBot Editor, or for other uses.
 	public void toFile() throws IOException {
-		PrintWriter output = new PrintWriter(new FileWriter("Quest_Array.txt"));
+		PrintWriter output = new PrintWriter(new FileWriter("Quest_Array_" + questArray.length + "_quests.txt"));
 		quests = quests.replaceAll("\\s+", "");
 		output.println("The Following Block of Code is designed to be 100% copy and pasted.");
 		output.println("After having parsed the script and compiled all the quests of the profile,");
@@ -197,13 +196,14 @@ public class QuestParser {
 		}
 		output.close();
 	}
-	
+
 	
 	/* TO DO LIST...
-	|	- Add User Input or File Selection (UI, or just txt input?)
-	|	- Implement main Static class
+
 	|	- Compile into a .jar
+	|	- Compile into a .exe wrapper
 	|	- Covert this concept into a C# Class for helping build that returns a finished Array 
 	|	- (mainly did it in Java to stay fresh)
+	|
 	*/
 }
