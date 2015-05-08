@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
-public class TotalQuest {
+public class Quest_Parser_Proof_Of_Concept {
 	
 	public static void main(String[] args) throws IOException 
 	{
