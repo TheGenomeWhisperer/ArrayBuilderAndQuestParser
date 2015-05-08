@@ -1,3 +1,17 @@
+/* Author: 	Sklug (aka The GenomeWhisperer)
+ * 
+ * Profile:	github.com/TheGenomeWhisperer/
+ * Repository:  ArrayBuilderAndQuestParser
+ * 
+ * Purpose: 	In Conjunction with the "Rebot" Warcraft program (Rebot.to)
+ * 		the questing profiles can be quite tedious to keep track of all
+ * 		of the added quest IDs, so I basically created a way to take 
+ * 		a quest profile exported as a .txt of any size, parse through it
+ * 		and collect all the IDs. For quality of life, it exports
+ * 		the data into an easily copyable format to paste straight into
+ * 		the official Rebot editor in C# format for quest progress checking 			
+ */
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -13,9 +27,9 @@ public class QuestParser {
 	int[] questArray;
 	
 	// Constructor
-	// In order: Opens Scanners >> Parses data and puts all questIDs into string >>
-	//           >> removes duplicate IDs >> builds an array from the string >> Establishes
-	//			 global String and global Array to have parsed final product.
+	// In order:	Opens Scanners >> Parses data and puts all questIDs into string >>
+	//      	>> removes duplicate IDs >> builds an array from the string >> Establishes
+	//		global String and global Array to have parsed final product.
 	public QuestParser(File file) throws FileNotFoundException {
 		Scanner copy = new Scanner(file);
 		Scanner copy2 = new Scanner(file);
@@ -23,9 +37,9 @@ public class QuestParser {
 		questArray = toArray(quests);
 	}
 
-	// Method: "IsFiveNum"
-	// Purpose: To verify that the give 5 number "string" is actually 0-9
-	//			which is just a basic boolean quality control check against input errors.
+	// Method: 	"IsFiveNum"
+	// Purpose	 To verify that the give 5 number "string" is actually 0-9
+	//		which is just a basic boolean quality control check against input errors.
 	public boolean isFiveNum(String str) {
 		boolean result = false;
 		int count = 0;
@@ -45,9 +59,9 @@ public class QuestParser {
 		return result;
 	}
 
-	// Method: "FindIDs"
-	// Purpose: To continue parsing through the mainFile until the next
-	//			5 number questID is found, returning the ID.
+	// Method: 	"FindIDs"
+	// Purpose: 	To continue parsing through the mainFile until the next
+	//		5 number questID is found, returning the ID.
 	public String findIDs(Scanner copy, Scanner copy2) {
 		
 		String result = "";
@@ -85,11 +99,11 @@ public class QuestParser {
 		return result;
 	}
 	
-	// Method: "RemoveDuplicates"
-	// Purpose: In parsing and pulling all instances of quest IDs, many repeat quests
-	// 			are called due to the nature of the Questing Profiles referencing the IDs multiple times.
-	//			I COULD use a "LinkedHashSet" to auto remove duplicates in an array,
-	//          but in regards to me making this a learning exercise, I will manually do it.
+	// Method: 	"RemoveDuplicates"
+	// Purpose: 	In parsing and pulling all instances of quest IDs, many repeat quests
+	// 		are called due to the nature of the Questing Profiles referencing the IDs multiple times.
+	//		I COULD use a "LinkedHashSet" to auto remove duplicates in an array,
+	//      	but in regards to me making this a learning exercise, I will manually do it.
 	public String removeDuplicates(String raw) {
 		String result = "";
 		Scanner remove = new Scanner(raw);
@@ -105,11 +119,11 @@ public class QuestParser {
 		return result;
 	}
 	
-	// Method: "ToArray"
-	// Purpose: Strings are nice to work with, but Arrays can also be useful.
-	//			This is so this Class can present two global variables
-	//			but in different formats, an array and a string. This just converts
-	//		 	the string into an array.
+	// Method: 	"ToArray"
+	// Purpose: 	Strings are nice to work with, but Arrays can also be useful.
+	//		This is so this Class can present two global variables
+	//		but in different formats, an array and a string. This just converts
+	//		the string into an array.
 	public int[] toArray(String IDs) {
 		int[] result;
 		String copy = IDs;
@@ -146,21 +160,23 @@ public class QuestParser {
 		return result;
 	}
 		
-	// Method "GetStringOfQuestIDs"
-	// Purpose: Main method to return final result
+	// Method 	"GetStringOfQuestIDs"
+	// Purpose	 Main method to return final result
 	public String getStringOfQuestIDs() {
 		return quests;
 	}
 	
-	// Method: "GetArrayOfQuestIDs"
-	// Purpose: Main method to return Array of questIDs
+	// Method	"GetArrayOfQuestIDs"
+	// Purpose: 	Main method to return Array of questIDs
 	public int[] getArrayOfQuestIDs() {
 		return questArray;
 	}
 	
-	// Method "ToFile"
-	// Purpose: To output to a .txt file the string, and the array in a
-	// 			format ready to copy into the ReBot Editor, or for other uses.
+	// Method: 	"ToFile"
+	// Purpose: 	To output to a .txt file the string, and the array in a
+	// 		format ready to copy into the ReBot Editor, or for other uses.
+	//		yes, I COULD do a long string with \n for line change, but this
+	//		is just easier to read, in my opinion.
 	public void toFile() throws IOException {
 		PrintWriter output = new PrintWriter(new FileWriter("Quest_Array_" + questArray.length + "_quests.txt"));
 		quests = quests.replaceAll("\\s+", "");
@@ -196,14 +212,4 @@ public class QuestParser {
 		}
 		output.close();
 	}
-
-	
-	/* TO DO LIST...
-
-	|	- Compile into a .jar
-	|	- Compile into a .exe wrapper
-	|	- Covert this concept into a C# Class for helping build that returns a finished Array 
-	|	- (mainly did it in Java to stay fresh)
-	|
-	*/
 }
