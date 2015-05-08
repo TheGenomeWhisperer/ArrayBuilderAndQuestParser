@@ -1,5 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,25 +11,22 @@ public class QuestParser {
 
 	// Instance Variables
 	String quests = "";
-	Scanner mainFile;
 	int[] questArray;
 	
-	// To Play around with until I combine my blocks of code.
-	Scanner copy;
-	Scanner copy2;
-	
 	// Constructor
+	// In order: Opens Scanners >> Parses data and puts all questIDs into string >>
+	//           >> removes duplicate IDs >> builds an array from the string >> Establishes
+	//			 global String and global Array to have parsed final product.
 	public QuestParser(File file) throws FileNotFoundException {
-		mainFile = new Scanner(file);
-		copy = new Scanner(file);
-		copy2 = new Scanner(file);
-		quests = findIDs();
+		Scanner copy = new Scanner(file);
+		Scanner copy2 = new Scanner(file);
+		quests = removeDuplicates(findIDs(copy,copy2));
 		questArray = toArray(quests);
 	}
 
 	// Method: "IsFiveNum"
 	// Purpose: To verify that the give 5 number "string" is actually 0-9
-	//			This is Pre-Integer conversion
+	//			which is just a basic boolean quality control check against input errors.
 	public boolean isFiveNum(String str) {
 		boolean result = false;
 		int count = 0;
@@ -49,7 +49,7 @@ public class QuestParser {
 	// Method: "FindIDs"
 	// Purpose: To continue parsing through the mainFile until the next
 	//			5 number questID is found, returning the ID.
-	public String findIDs() {
+	public String findIDs(Scanner copy, Scanner copy2) {
 		
 		String result = "";
 		String quest = "";
@@ -86,12 +86,38 @@ public class QuestParser {
 		return result;
 	}
 	
+	// Method: "RemoveDuplicates"
+	// Purpose: In parsing and pulling all instances of quest IDs, many repeat quests
+	// 			are called due to the nature of the Questing Profiles referencing the IDs multiple times.
+	//			I COULD use a "LinkedHashSet" to auto remove duplicates in an array,
+	//          but in regards to me making this a learning exercise, I will manually do it.
+	public String removeDuplicates(String raw) {
+		String result = "";
+		Scanner remove = new Scanner(raw);
+		while (remove.hasNext()) {
+			String temp = remove.next();
+			if (!result.contains(temp)) {
+				result += temp + " ";
+			}
+		}
+		remove.close();
+		// Removing the last comma from the list.
+		result = result.substring(0, result.length() -2 );
+		return result;
+	}
+	
+	// Method: "ToArray"
+	// Purpose: Strings are nice to work with, but Arrays can also be useful.
+	//			This is so this Class can present two global variables
+	//			but in different formats, an array and a string. This just converts
+	//		 	the string into an array.
 	public int[] toArray(String IDs) {
 		int[] result;
 		String copy = IDs;
 		Scanner idCount = new Scanner(IDs);
 		Scanner idToArray = new Scanner(copy);
 		int count = 0;
+		// Determining how many items there are to establish array size.
 		while (idCount.hasNext()) {
 			idCount.next();
 			count++;
@@ -120,13 +146,64 @@ public class QuestParser {
 		idToArray.close();		
 		return result;
 	}
-	
-	// Main method to return String of questIDs
+		
+	// Method "GetStringOfQuestIDs"
+	// Purpose: Main method to return final result
 	public String getStringOfQuestIDs() {
 		return quests;
 	}
-	// Main method to return Array of questIDs
+	
+	// Method: "GetArrayOfQuestIDs"
+	// Purpose: Main method to return Array of questIDs
 	public int[] getArrayOfQuestIDs() {
 		return questArray;
 	}
+	
+	// Method "ToFile"
+	// Purpose: To output to a .txt file the string, and the array in a
+	// 			format ready to copy into the ReBot Editor, or for other uses.
+	public void toFile() throws IOException {
+		PrintWriter output = new PrintWriter(new FileWriter("Quest_Array.txt"));
+		quests = quests.replaceAll("\\s+", "");
+		output.println("The Following Block of Code is designed to be 100% copy and pasted.");
+		output.println("After having parsed the script and compiled all the quests of the profile,");
+		output.println("all you need to do is now copy and paste this block of code into the");
+		output.println("Rebot editor's \"Run C#\" Script tool.  Then, when placing that block of code");
+		output.println("at the start of any questing profile that you just parsed, it will provide");
+		output.println("a useful, quality of life, profile progress report!");
+		output.println();
+		output.println("Block of Code Begins Here:");
+		output.println();
+		output.println("int[] questArray = {" + quests + "};");
+		output.println("int count = 0;");
+		output.println("for (int i = 0; i < questArray.Length; i++)");
+		output.println("{");
+		output.println("\tif (!IsQuestCompleted(questArray[i]))");
+		output.println("\t{");
+		output.println("\t\tcount++;");
+		output.println("\t}");
+		output.println("}");
+		output.println("Print(\"You Have \" + count + \" quests left to complete in this questpack!\");");
+		output.println();
+		output.println("End Block of Code");
+		output.println();
+		output.println("QUEST ID ARRAY");
+		output.println("(For Ease to copy and paste into a column, if needed)");
+		output.println();
+
+		for(int i = 0; i < questArray.length; i++)
+		{
+			output.println(questArray[i]);
+		}
+		output.close();
+	}
+	
+	
+	/* TO DO LIST...
+	|	- Add User Input or File Selection (UI, or just txt input?)
+	|	- Implement main Static class
+	|	- Compile into a .jar
+	|	- Covert this concept into a C# Class for helping build that returns a finished Array 
+	|	- (mainly did it in Java to stay fresh)
+	*/
 }
