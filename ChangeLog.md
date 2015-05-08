@@ -8,3 +8,8 @@ May 7th, 2015
   - Added "Get" methods for string and array
   - Added toFile method to print out results to a .txt
   - Expanded my JUnit tests (100% working)
+
+May 8th. 2015
+  - Added GUI with selectable file choosing
+  - Exported it as a .jar (worked, YAY!)
+  - Thinking of creating a .exe, or jnlp
