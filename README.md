@@ -30,5 +30,5 @@ Official Quest Profile Location found here:
 
 
 
-[Pic1]: http://imgur.com/F1jgQ5Q "GUI"
-[Pic2]: http://imgur.com/ThZEQ3q "File Output"
+[Pic1]: http://i.imgur.com/F1jgQ5Q.png "GUI"
+[Pic2]: http://i.imgur.com/ThZEQ3q.png "File Output"
