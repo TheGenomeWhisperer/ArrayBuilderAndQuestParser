@@ -18,7 +18,7 @@ The Program is simple!
 
 The output will be in whichever folder the program is placed:
 
-~[alt text][Pic2]
+![alt text][Pic2]
 
 
 
