@@ -116,6 +116,7 @@ public class QuestParser {
 		remove.close();
 		// Removing the last comma from the list.
 		result = result.substring(0, result.length() -2 );
+		
 		return result;
 	}
 	
@@ -180,6 +181,36 @@ public class QuestParser {
 	public void toFile() throws IOException {
 		PrintWriter output = new PrintWriter(new FileWriter("Quest_Array_" + questArray.length + "_quests.txt"));
 		quests = quests.replaceAll("\\s+", "");
+		// Making lines more readable. This would be the equivalent of say, StringBuffer.Insert();
+		String temp = "";
+		int count = 0;
+		int count2 = quests.length() / 97;
+		int index = 0;
+		for (int i = 0; i < quests.length(); i++)
+		{
+			count++;
+			if (count > 97 && quests.charAt(i) == ',')
+			{
+				if (temp.length() > 1)
+				{
+					temp += quests.substring(index+ 1, i) + "\n";	// The actual insert
+				}
+				else
+				{
+					temp += quests.substring(index, i) + "\n";	// The actual insert
+				}
+				
+				index = i;
+				count = 0;
+				count2--;
+			}
+			if (count2 == 0)
+			{
+				temp += quests.substring(index+1, quests.length());
+				break;
+			}
+		}
+		quests = temp;
 		output.println("The Following Block of Code is designed to be 100% copy and pasted.");
 		output.println("After having parsed the script and compiled all the quests of the profile,");
 		output.println("all you need to do is now copy and paste this block of code into the");
